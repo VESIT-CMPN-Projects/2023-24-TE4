@@ -37,7 +37,6 @@ def generate_booking_url(destination, checkin_date, checkout_date, guests, budge
 
 def main():
     st.title("Hotel Booking")
-    st.image('./logo/hotels.png', width=600)
 
     # Input fields
     destination = st.text_input("Destination", "Pune")
@@ -135,7 +134,6 @@ def generate_flight_booking_url(origin_city, destination_city, depart_date, retu
 
 def main():
     st.title("Flight Booking ")
-    st.image('./logo/flights.png', width=600)
 
     # Input fields
     origin_city = st.text_input("Origin City", "Mumbai")
