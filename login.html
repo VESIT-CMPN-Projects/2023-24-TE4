@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Authentication</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .auth-form {
+            max-width: 400px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-btn {
+            margin-bottom: 15px;
+        }
+
+        .social-btn button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 auth-form" id="login-form">
+                <h2 class="text-center">Login</h2>
+                <div class="social-btn">
+                    <button type="button" id="google-login" class="btn btn-danger btn-lg btn-block">
+                        <i class="fa fa-google"></i> Login with Google
+                    </button>
+                </div>
+                <div class="social-btn">
+                    <button type="button" id="facebook-login" class="btn btn-primary btn-lg btn-block">
+                        <i class="fa fa-facebook"></i> Login with Facebook
+                    </button>
+                </div>
+                <form id="login">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                </form>
+                <hr>
+                <p class="text-center">Don't have an account? <a href="#" id="show-registration">Register here</a></p>
+            </div>
+
+            <div class="col-sm-6 col-sm-offset-3 auth-form" id="registration-form" style="display: none;">
+                <h2 class="text-center">Register</h2>
+                <form id="register">
+                    <div class="form-group">
+                        <label for="regEmail">Email:</label>
+                        <input type="email" class="form-control" id="regEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password:</label>
+                        <input type="password" class="form-control" id="regPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Register</button>
+                </form>
+                <hr>
+                <p class="text-center">Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-analytics.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-auth.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBgjgA7PYySFSDVuiE4cXnC2OcnkIyjBZc",
+    authDomain: "demo1-cb6e8.firebaseapp.com",
+    projectId: "demo1-cb6e8",
+    storageBucket: "demo1-cb6e8.appspot.com",
+    messagingSenderId: "231951503459",
+    appId: "1:231951503459:web:8a71fd4435af629d5aa856",
+    measurementId: "G-ESJXLYXSVW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth();
+
+        const googleProvider = new GoogleAuthProvider();
+        const facebookProvider = new FacebookAuthProvider();
+
+        const loginForm = document.getElementById("login-form");
+        const registrationForm = document.getElementById("registration-form");
+        const showRegistrationLink = document.getElementById("show-registration");
+        const showLoginLink = document.getElementById("show-login");
+
+        showRegistrationLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            loginForm.style.display = "none";
+            registrationForm.style.display = "block";
+        });
+
+        showLoginLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            loginForm.style.display = "block";
+            registrationForm.style.display = "none";
+        });
+
+        document.getElementById("google-login").addEventListener("click", function () {
+            signInWithPopup(auth, googleProvider)
+                .then((result) => {
+                    const user = result.user;
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const accessToken = credential.accessToken;
+
+                    alert("Welcome " + user.displayName);
+                    console.log(user);
+                    // Redirect to home page or do further actions after successful login
+                    window.location.href = "http://127.0.0.1:5500/index.html";
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorMessage);
+                });
+        });
+
+        document.getElementById("facebook-login").addEventListener("click", function () {
+            signInWithPopup(auth, facebookProvider)
+                .then((result) => {
+                    const user = result.user;
+                    const credential = FacebookAuthProvider.credentialFromResult(result);
+                    const accessToken = credential.accessToken;
+
+                    alert("Welcome " + user.displayName);
+                    console.log(user);
+                    // Redirect to home page or do further actions after successful login
+                    window.location.href = "http://127.0.0.1:5500/index.html";
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorMessage);
+                });
+        });
+
+        document.getElementById("login").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Welcome " + user.displayName);
+                    console.log(user);
+                    // Redirect to home page or do further actions after successful login
+                    window.location.href = "http://127.0.0.1:5500/index.html";
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorMessage);
+                });
+        });
+
+        document.getElementById("register").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const regEmail = document.getElementById("regEmail").value;
+            const regPassword = document.getElementById("regPassword").value;
+
+            createUserWithEmailAndPassword(auth, regEmail, regPassword)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Registration successful! Welcome " + user.email);
+                    console.log(user);
+                    // Redirect to home page or do further actions after successful registration
+                    window.location.href = "http://127.0.0.1:5500/login.html";
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorMessage);
+                });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

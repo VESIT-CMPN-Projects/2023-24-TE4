@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('assets/bg.jpg') ; /* Replace 'background.jpg' with your background image */
+    background-size: cover;
+    color: white;
+  
+  }
+  
+  header {
+    background-color: #2e676c;
+    padding: 20px;
+  }
+  
+  h1 {
+    margin: 0;
+  }
+  
+  #devotional-places {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .place-card {
+    background-color: rgba(61, 63, 63, 0.7);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .place-card img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .place-card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .place-card h2 {
+    margin-top: 10px;
+  }
+  
+  .place-card p {
+    font-size: 14px;
+  }
+  
+  a {
+    color: rgb(70, 144, 181);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
